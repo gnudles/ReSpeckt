@@ -1,8 +1,8 @@
 #include <stdint.h>
 
-#define ROR(x, r) ((x >> r) | (x << (64 - r)))
-#define ROL(x, r) ((x << r) | (x >> (64 - r)))
-#define R(x, y, k) (x = ROR(x, 8), x += y, x ^= k, y = ROL(y, 3), y ^= x)
+#define ROR(x, r) ((x >> (r)) | (x << ((64 - (r))/*&63*/)))
+#define ROL(x, r) ((x << (r)) | (x >> ((64 - (r))/*&63*/)))
+#define R(x, y, k) (x = ROR(x, 24+(y&31)), x += y, x ^= k, y = ROL(y, 9+(x&31)), y ^= x)
 #define ROUNDS 32
 
 void encrypt(uint64_t ct[2],
